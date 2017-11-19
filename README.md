@@ -9,4 +9,6 @@ Additionally getwthr.py creates a JSON like file (wthrdata.dat) that is copied t
 (/var/www/html). 
 This file is then used to display weather station data on a web page using the index.html file included in this repository.
 
+See the Wiki for more information.
+
 Much of the code found here is modified versions of code produced by switchdoclabs who has a repository here on github.
