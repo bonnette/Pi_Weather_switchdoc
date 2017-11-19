@@ -7,4 +7,4 @@ this runs the program once a minute
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-* * * * * sudo python /home/pi/TestWeather/trial.py
+* * * * * sudo python /home/pi/TestWeather/getwthr.py
