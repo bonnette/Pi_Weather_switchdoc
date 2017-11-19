@@ -1,0 +1,18 @@
+
+ - 4 channel 16 bit Analogue to Digital converter based on ADS1115 -- http://store.switchdoc.com/grove-4-channel-16-bit-analog-to-digital-converter/
+
+ - AM2315 I2C temperature/humidity sensor -- http://store.switchdoc.com/grove-am2315-encased-i2c-temperature-humidity-sensor-for-raspberry-pi-arduino/
+
+ - Grove I2C hub -- http://store.switchdoc.com/grove-12c-hub/
+
+ - Weather interface -- http://store.switchdoc.com/the-weather-board-w-grove-interface-board-for-weather-instruments-for-raspberry-pi-arduino/
+
+ - Weather Rack -- http://store.switchdoc.com/weatherrack-anemometer-wind-rain-for-weatherpiarduino-weatherplus-raspberry-pi-arduino/
+
+ - Raspberry Pi 3 Model B -- https://www.amazon.com/gp/product/B01CD5VC92/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1
+
+ - 16GB micro SD card -- https://www.walmart.com/ip/SanDisk-Ultra-PLUS-16GB-microSD-Card-Imaging-Class-10/52329615
+
+ - Grove to female jumper cables -- http://store.switchdoc.com/grove-4-pin-female-jumper-to-grove-4-pin-conversion-cable-5-pcs-per-pack/
+
+ - Grove to Grove cables -- http://store.switchdoc.com/grove-20cm-universal-4-pin-5-pack/
