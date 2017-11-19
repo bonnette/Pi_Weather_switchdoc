@@ -1,0 +1,304 @@
+﻿<!DOCTYPE html>
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+
+<title>Weather</title>
+<!-- this cause the browser to refresh itself every 60 seconds-->
+<meta http-equiv="refresh" content="60"/>
+</head>
+<body>
+    <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>  
+    <script>
+
+    var Outdoor_Temperature = 0.0;
+    var Outdoor_Humidity = 0.0;
+
+    var Indoor_Temperature = 0.0;
+    var Barometric_Pressure = 0.0;
+    var Altitude = 0.0;
+
+    var currentWindSpeed = 0.0;
+    var currentWindGust = 0.0;
+    var currentWindDirection = 0.0;
+    var rainTotal = 0.0;
+    var windSpeedMin = 0.0;
+    var windSpeedMax = 0.0;
+    var windGustMin = 0.0;
+    var windGustMax = 0.0;
+    var currentWindDirectiontxt = "Foo";
+
+    var windDirectionMin = 0.0;
+    var windDirectionMax = 0.0;
+    var EnglishOrMetric = 0;
+    var SampleTimeStamp = "";
+    var runningStatus = " Not Connected";
+    var IPAddress = "";
+    var ourStationName = "";
+    var AQSQual = "";
+    var AQSQuan = 0;
+	var Bat = 0;
+	var BatCur = 0;
+	var Sol = 0;
+	var SolCur = 0;
+	var Lod = 0;
+	var LodCur = 0;
+
+    $(document).ready( function () {
+  		getCurrentOurWeather();
+     });
+
+	
+	
+        function getCurrentOurWeather() {
+
+           $.getJSON('./wthrdata.dat', function (data) {
+	   var obj = jQuery.parseJSON(JSON.stringify(data));
+	   runningStatus = "is Connected";
+	   $('#runningStatus').text( runningStatus);
+
+	   var result = obj.FullDataString.split(",");
+
+           EnglishOrMetric = result[15];
+
+	   SampleTimeStamp = result[16];
+
+	   if (result.length > 17)
+		ourStationName = result[17];
+	   else
+		ourStationName = "";
+		
+	   $('#StationName').text( ourStationName);
+
+	   if (ourStationName.length > 0)
+                	$('#StationName2').text("for "+ourStationName);
+	   else
+                	$('#StationName2').text( ourStationName);
+		
+
+	   $('#SampleTimeStamp').text( SampleTimeStamp);
+
+           Outdoor_Temperature = Number(result[0]); 
+
+	   
+           Outdoor_Temperature = Outdoor_Temperature  * 1.8 + 32.0; 
+	   	$('#Outdoor_Temperature').text( Outdoor_Temperature.toFixed(2)+" F");
+
+           Outdoor_Humidity = Number(result[1]); 
+	   	$('#Outdoor_Humidity').text( Outdoor_Humidity+" %"); 
+
+      	 
+
+           Indoor_Temperature = Number(result[2]);
+
+		   Indoor_Temperature = Indoor_Temperature  * 1.8 + 32.0; 
+	   	$('#Indoor_Temperature').text( Indoor_Temperature.toFixed(2)+" F");
+
+           
+           Barometric_Pressure = Number(result[3]);
+		   
+           Barometric_Pressure = (Barometric_Pressure  / 1000.0) * 0.29529980165 
+	   	$('#Barometric_Pressure').text( Barometric_Pressure.toFixed(2)+" in");
+ 
+           Altitude = Number(result[4]);
+
+           Altitude = Altitude * 3.28084;
+	   	$('#Altitude').text( Altitude.toFixed(2)+" ft");
+
+           
+
+           currentWindSpeed = Number(result[5]);
+
+           currentWindSpeed = currentWindSpeed * 0.62137121212121; 
+	   	$('#currentWindSpeed').text( currentWindSpeed.toFixed(2)+"  mph");
+
+           
+           currentWindGust = Number(result[6]);
+      	
+           currentWindGust = currentWindGust * 0.62137121212121;
+           if (currentWindSpeed >= currentWindGust) {currentWindGust = 0.0;} // Fixes the wind speed higher than gust problem 
+	   	$('#currentWindGust').text( currentWindGust.toFixed(2)+" mph");
+           
+           currentWindDirection = Number(result[7]);
+	   $('#currentWindDirection').text( currentWindDirection+" Degrees");
+	   
+// Added if statement to convert direction in degrees to text (IE North, South, etc)	   
+        if(currentWindDirection >= 0  && currentWindDirection < 22) {
+        $('#currentWindDirectiontxt').text("North");}
+
+        else if (currentWindDirection >= 22  && currentWindDirection < 45) {
+        $('#currentWindDirectiontxt').text("North North East");}
+		
+        else if (currentWindDirection >= 45  && currentWindDirection < 67) {
+        $('#currentWindDirectiontxt').text("North East");}
+
+        else if (currentWindDirection >= 67  && currentWindDirection < 90) {
+        $('#currentWindDirectiontxt').text("East North East");}
+
+        else if (currentWindDirection >= 90  && currentWindDirection < 112) {
+        $('#currentWindDirectiontxt').text("East");}
+
+        else if (currentWindDirection >= 112  && currentWindDirection < 135) {
+        $('#currentWindDirectiontxt').text("East South East");}
+
+        else if (currentWindDirection >= 135   && currentWindDirection < 157) {
+        $('#currentWindDirectiontxt').text("South East");}
+
+        else if (currentWindDirection >= 157  && currentWindDirection < 180) {
+        $('#currentWindDirectiontxt').text("South South East");}
+
+        else if (currentWindDirection >= 180  && currentWindDirection < 202) {
+        $('#currentWindDirectiontxt').text("South");}
+
+        else if (currentWindDirection >= 202  && currentWindDirection < 225) {
+        $('#currentWindDirectiontxt').text("South South West");}
+
+        else if (currentWindDirection >= 225  && currentWindDirection < 247) {
+        $('#currentWindDirectiontxt').text("South West");}
+
+        else if (currentWindDirection >= 247  && currentWindDirection < 270) {
+        $('#currentWindDirectiontxt').text("West South West");}
+
+        else if (currentWindDirection >= 270  && currentWindDirection < 292) {
+        $('#currentWindDirectiontxt').text("West");}
+
+        else if (currentWindDirection >= 292  && currentWindDirection < 315) {
+        $('#currentWindDirectiontxt').text("West North West");}
+
+        else if (currentWindDirection >= 315  && currentWindDirection < 337) {
+        $('#currentWindDirectiontxt').text("North West");}
+
+        else if (currentWindDirection >= 337  && currentWindDirection < 359) {
+        $('#currentWindDirectiontxt').text("North North West");}
+
+// Following lines added to display Solar Charging system
+	      Bat = Number(result[20]);
+	   $('#Bat').text( Bat+" Volts");
+	   	  BatCur = Number(result[21]);
+	   $('#BatCur').text( BatCur+" ma");
+	   	  Sol = Number(result[22]);
+	   $('#Sol').text( Sol+" Volts");
+	   	  SolCur = Number(result[23]);
+	   $('#SolCur').text( SolCur+" ma");
+	   	  Lod = Number(result[24]);
+	   $('#Lod').text( Lod+" Volts");
+	   	  LodCur = Number(result[25]);
+	   $('#LodCur').text( LodCur+" ma");
+           
+           rainTotal = Number(result[8]);
+
+           	rainTotal = rainTotal * 0.039370079999999869902; 
+	   	$('#rainTotal').text( rainTotal.toFixed(2)+" in");
+
+           
+           windSpeedMin = Number(result[9]);
+
+           	windSpeedMin = windSpeedMin * 0.62137121212121; 
+	   	$('#windSpeedMin').text( windSpeedMin.toFixed(2)+" mph");
+
+           
+           windSpeedMax = Number(result[10]);
+
+           	windSpeedMax = windSpeedMax * 0.62137121212121; 
+	   	$('#windSpeedMax').text( windSpeedMax.toFixed(2)+" mph");
+
+           
+           windGustMin = Number(result[11]);
+
+           	windGustMin = windGustMin * 0.62137121212121; 
+	   	$('#windGustMin').text( windGustMin.toFixed(2)+" mph");
+
+           
+           windGustMax = Number(result[12]);
+
+           	windGustMax = windGustMax * 0.62137121212121; 
+	   	$('#windGustMax').text( windGustMax.toFixed(2)+" mph");
+           
+
+           windDirectionMin = Number(result[13]);
+	   $('#windDirectionMin').text( windDirectionMin+" Degrees");
+           
+           windDirectionMax = Number(result[14]);
+	   $('#windDirectionMax').text( windDirectionMax+" Degrees");
+
+	   //location.reload(false);
+            });
+        	
+	}
+</script>        
+
+   <br/>
+   <br/>
+<fieldset>
+<legend>Weather </legend>
+
+    <p>
+		  <h3>Last updated: <B id="SampleTimeStamp"> </B></h3>
+	</p>
+	
+	<p>
+          <h3>Temperature: <B id="Outdoor_Temperature" ></B></h3>
+    </p>
+    <p>
+          <h3>Humidity: <B id="Outdoor_Humidity" ></B></h3>
+    </p>
+
+    <p>
+          <h3>Pressure: <B id="Barometric_Pressure" ></B></h3>
+    </p>
+    <p>
+          <h3>Wind Speed : <B id="currentWindSpeed" ></B></h3>
+    </p>
+    <p>
+          <h3>Wind Gust: <B id="currentWindGust" ></B></h3>
+    </p>
+	<p>
+          <h3>Wind Direction: <B id="currentWindDirectiontxt" ></B></h3>
+    </p>
+    <p>
+          <h3>Rain Total: <B id="rainTotal" ></B></h3>
+    </p>
+<!--   <p>
+   <button onclick="location.href='index.html'">Return to Tri-County</button>
+   </p>-->
+
+</fieldset>
+   <br/>
+<fieldset>
+<legend>Solar Charging Data </legend>
+	<p>
+          <h3>Battery Voltage: <B id="Bat" ></B></h3>
+    </p>
+	<p>
+          <h3>Battery Current: <B id="BatCur" ></B></h3>
+    </p>
+	<p>
+          <h3>Solar Voltage: <B id="Sol" ></B></h3>
+    </p>
+	<p>
+          <h3>Solar Current: <B id="SolCur" ></B></h3>
+    </p>
+	<p>
+          <h3>Load Voltage: <B id="Lod" ></B></h3>
+    </p>
+	<p>
+          <h3>Load Current: <B id="LodCur" ></B></h3>
+    </p>
+	<p>
+          <h3>Internal Box Temp: <B id="Indoor_Temperature" ></B></h3>
+    </p>
+</fieldset>
+
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>
