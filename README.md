@@ -12,3 +12,4 @@ This file is then used to display weather station data on a web page using the i
 See the Wiki for more information.
 
 Much of the code found here is modified versions of code produced by switchdoclabs who has a repository here on github.
+I would like to thank Adafruit (adafruit.com) and Switchdoc labs (switchdoc.com) for their contributions to the open source community. We all benefit when people share. 
