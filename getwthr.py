@@ -24,25 +24,36 @@ rainPin = 21
 SDL_MODE_INTERNAL_AD = 0
 SDL_MODE_I2C_ADS1015 = 1
 
+#sample mode means return immediately.  THe wind speed is averaged at sampleTime or when you ask, whichever is longer
+SDL_MODE_SAMPLE = 0
+#Delay mode means to wait for sampleTime and the average after that time.
+SDL_MODE_DELAY = 1
+
 from tentacle_pi.AM2315 import AM2315 # driver for Outdoor temperature and humidity guage
 am = AM2315(0x5c,"/dev/i2c-1")
 sensor = BMP280.BMP280()
 temperature, humidity, crc_check = am.sense()
 ds3231 = SDL_DS3231.SDL_DS3231(1, 0x68)
 weatherStation = SDL_Pi_WeatherRack.SDL_Pi_WeatherRack(anenometerPin, rainPin, 0,0,SDL_MODE_I2C_ADS1015)
-currentWindSpeed = weatherStation.current_wind_speed()/1.609
 
+weatherStation.setWindMode(SDL_MODE_SAMPLE, 5.0)
+#weatherStation.setWindMode(SDL_MODE_DELAY, 5.0)
+
+currentWindSpeed = weatherStation.current_wind_speed()/1.609
 
 tm = ds3231.read_datetime()   
 it = sensor.read_temperature()
 ot = temperature
+ot = temperature
+hum = humidity
 hum = humidity
 ps = sensor.read_pressure()/1000
 ws = weatherStation.current_wind_speed()/1.609 # test wind speed
-wg = weatherStation.get_wind_gust()
+wg = weatherStation.get_wind_gust()/1.609
 wd = weatherStation.current_wind_direction()
 time.sleep(5.0) # must be five or above 
 ws = weatherStation.current_wind_speed()/1.609 # test wind speed again
+wg = weatherStation.get_wind_gust()/1.609 # test wind gust again
 print "Time = %s" % tm
 print "Indoor Temp = %0.1f *C" % it
 print "Outdoor Temp = %0.1f *C" % ot
