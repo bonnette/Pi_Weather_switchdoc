@@ -20,7 +20,7 @@ import SDL_DS3231 # Real Time clock on the weather board
 import SDL_Pi_WeatherRack # Sensors on the weather rack (wind speed, direction, and rain guage)
 
 anenometerPin = 26 # this is physical pin 37 on the pi
-rainPin = 21
+rainPin = 21 # This is physical pin 40 on the pi
 SDL_MODE_INTERNAL_AD = 0
 SDL_MODE_I2C_ADS1015 = 1
 
