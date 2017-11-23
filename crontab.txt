@@ -5,6 +5,20 @@ this runs the program once a minute
 
 # 
 # For more information see the manual pages of crontab(5) and cron(8)
+
 # 
 # m h  dom mon dow   command
+
 * * * * * sudo python /home/pi/TestWeather/getwthr.py
+
+
+
+To run a program at boot up:
+crontab -e
+
+@reboot sh /home/pi/TestWeather/weatherlauncher.sh
+
+
+If you want to log errors:
+
+@reboot sh /home/pi/bbt/weatherlauncher.sh >/home/pi/logs/cronlog 2>&1
