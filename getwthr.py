@@ -28,6 +28,7 @@ SDL_MODE_I2C_ADS1015 = 1
 SDL_MODE_SAMPLE = 0
 #Delay mode means to wait for sampleTime and the average after that time.
 SDL_MODE_DELAY = 1
+totalRain = 0
 
 from tentacle_pi.AM2315 import AM2315 # driver for Outdoor temperature and humidity guage
 am = AM2315(0x5c,"/dev/i2c-1")
@@ -46,8 +47,10 @@ it = sensor.read_temperature()
 # OK, The AM2315 sometimes does not always anser up to a query on the I2C buss
 # So, to get around this we ask the AM2315 twice for "Temperature and Humidity"
 ot = temperature
+time.sleep(1.5)
 ot = temperature
 hum = humidity
+time.sleep(1.5)
 hum = humidity
 # The AM2315 sometimes does not answer up even ater being asked tiwce. So we use humidity as
 # an indicator to determine if the AM2315 answered. If it did. The humidity should not be 0
@@ -55,9 +58,13 @@ hum = humidity
 zz=0
 while hum == 0:
 	if zz < 9:
+		time.sleep(1.5)
 		zz=zz+1
 		ot = temperature
-        hum = humidity
+		hum = humidity
+		print "humidity still 0"
+	else:
+		break
 
 ps = sensor.read_pressure()/1000
 ws = weatherStation.current_wind_speed()/1.609 # test wind speed
@@ -66,6 +73,7 @@ wd = weatherStation.current_wind_direction()
 time.sleep(5.0) # must be five or above 
 ws = weatherStation.current_wind_speed()/1.609 # test wind speed again
 wg = weatherStation.get_wind_gust()/1.609 # test wind gust again
+totalRain = weatherStation.get_current_rain_total()/25.4
 print "Time = %s" % tm
 print "Indoor Temp = %0.1f *C" % it
 print "Outdoor Temp = %0.1f *C" % ot
@@ -74,13 +82,14 @@ print "Pressure = %0.2f KPa" % ps
 print "Wind Speed= %0.2f MPH" % ws
 print "Wind Gust= %0.2f MPH" % wg
 print "Wind Direction= %0.2f Degrees" % wd
+print "Total Rain= %0.2f in" % totalRain
 print " "
 
 
 
 # Open the weather data file and populate with data 
 file = open("wthrdata.dat","w")
-file.write('{"FullDataString": "%0.1f,%0.1f,%0.2f,%s,50.63,%0.2f,%0.2f,%0.2f,0.00,3.33,6.98,6.30,11.21,90.00,135.00,0,%s,,0,-1,4.04,-54.00,4.92,93.20,5.15,24.00,0.00,0.00,0.00,0.00,0.00,0.00,V:1,WXLMB ,", "id": "1", "name": "OurWeather", "connected": true}' % (ot,hum,it,sensor.read_pressure(),ws,wg,wd,tm))
+file.write('{"FullDataString": "%0.1f,%0.1f,%0.2f,%s,50.63,%0.2f,%0.2f,%0.2f,%0.2f,3.33,6.98,6.30,11.21,90.00,135.00,0,%s,,0,-1,4.04,-54.00,4.92,93.20,5.15,24.00,0.00,0.00,0.00,0.00,0.00,0.00,V:1,WXLMB ,", "id": "1", "name": "OurWeather", "connected": true}' % (ot,hum,it,sensor.read_pressure(),ws,wg,wd,totalRain,tm))
 file.close() # close the weather data file
 
 # Print the weather data file contents on the terminal screen
