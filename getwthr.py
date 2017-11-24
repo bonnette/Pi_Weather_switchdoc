@@ -44,22 +44,18 @@ currentWindSpeed = weatherStation.current_wind_speed()/1.609
 
 tm = ds3231.read_datetime()   
 it = sensor.read_temperature()
-# OK, The AM2315 sometimes does not always anser up to a query on the I2C buss
-# So, to get around this we ask the AM2315 twice for "Temperature and Humidity"
-ot = temperature
-time.sleep(1.5)
 ot = temperature
 hum = humidity
-time.sleep(1.5)
-hum = humidity
-# The AM2315 sometimes does not answer up even ater being asked tiwce. So we use humidity as
+# The AM2315 sometimes does not answer up even after being asked tiwce. So we use humidity as
 # an indicator to determine if the AM2315 answered. If it did. The humidity should not be 0
 # If the humidity is 0 we ask again and again (not to exceed 10 times) We give up when zz = 9  
 zz=0
-while hum == 0:
+while ((hum == 0) or (ot < -100.0)):
+#while hum == 0:
 	if zz < 9:
 		time.sleep(1.5)
 		zz=zz+1
+		temperature, humidity, crc_check = am.sense()
 		ot = temperature
 		hum = humidity
 		print "humidity still 0"
@@ -83,6 +79,7 @@ print "Wind Speed= %0.2f MPH" % ws
 print "Wind Gust= %0.2f MPH" % wg
 print "Wind Direction= %0.2f Degrees" % wd
 print "Total Rain= %0.2f in" % totalRain
+print "crc: %i" % crc_check
 print " "
 
 
