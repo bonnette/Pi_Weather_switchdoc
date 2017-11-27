@@ -9,7 +9,12 @@ this runs the program once a minute
 # 
 # m h  dom mon dow   command
 
+
+# Run the script every minute
 * * * * * sudo python /home/pi/TestWeather/getwthr.py
+
+# Reboot every day at midnight
+0 0 * * * reboot
 
 
 

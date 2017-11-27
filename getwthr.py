@@ -55,7 +55,7 @@ while ((hum == 0) or (ot < -100.0)):
 	if zz < 9:
 		time.sleep(1.5)
 		zz=zz+1
-		temperature, humidity, crc_check = am.sense()
+		temperature, humidity, crc_check = am.sense() #wake up the AM2315 again
 		ot = temperature
 		hum = humidity
 		print "humidity still 0"
@@ -86,7 +86,7 @@ print " "
 
 # Open the weather data file and populate with data 
 file = open("wthrdata.dat","w")
-file.write('{"FullDataString": "%0.1f,%0.1f,%0.2f,%s,50.63,%0.2f,%0.2f,%0.2f,%0.2f,3.33,6.98,6.30,11.21,90.00,135.00,0,%s,,0,-1,4.04,-54.00,4.92,93.20,5.15,24.00,0.00,0.00,0.00,0.00,0.00,0.00,V:1,WXLMB ,", "id": "1", "name": "OurWeather", "connected": true}' % (ot,hum,it,sensor.read_pressure(),ws,wg,wd,totalRain,tm))
+file.write('{"FullDataString": "%04.1f,%0.1f,%04.1f,%s,50.63,%04.1f,%04.1f,%05.1f,%0.2f,3.33,6.98,6.30,11.21,90.00,135.00,0,%s,,0,-1,4.04,-54.00,4.92,93.20,5.15,24.00,0.00,0.00,0.00,0.00,0.00,0.00,V:1,WXLMB ,", "id": "1", "name": "OurWeather", "connected": true}' % (ot,hum,it,sensor.read_pressure(),ws,wg,wd,totalRain,tm))
 file.close() # close the weather data file
 
 # Print the weather data file contents on the terminal screen
