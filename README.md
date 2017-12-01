@@ -1,8 +1,10 @@
 # Pi_Weather_switchdoc
-Simple python code used to interrogate the switchdoc weather board and rack
+Simple python code used to control a Raspberry Pi to interrogate a switchdoc weather board and rack
 
-These are experiments with python on a raspberry pi connected to the Switchdoc Weather Pi Board and their
+The project uses Python on a Raspberry pi connected to the Switchdoc Weather Pi Board and a switchdoc
 weather sensor rack.
+
+Weather information is displayed to a user through a web page sitting in an Apache server on the Raspberry Pi.
 
 getwthr.py is the main executable. It uses the sensor libraries provided by Adafruit and Switchdoc to query the sensors and print the results onto the terminal screen.
 Additionally getwthr.py creates a JSON like file (wthrdata.dat) that is copied to an Apache web server running on the Pi 
