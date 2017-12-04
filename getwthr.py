@@ -38,9 +38,10 @@ ds3231 = SDL_DS3231.SDL_DS3231(1, 0x68)
 weatherStation = SDL_Pi_WeatherRack.SDL_Pi_WeatherRack(anenometerPin, rainPin, 0,0,SDL_MODE_I2C_ADS1015)
 
 weatherStation.setWindMode(SDL_MODE_SAMPLE, 5.0)
-#weatherStation.setWindMode(SDL_MODE_DELAY, 5.0)
 
 currentWindSpeed = weatherStation.current_wind_speed()/1.609
+
+#While True:
 
 tm = ds3231.read_datetime()   
 it = sensor.read_temperature()
@@ -51,7 +52,6 @@ hum = humidity
 # If the humidity is 0 we ask again and again (not to exceed 10 times) We give up when zz = 9  
 zz=0
 while ((hum == 0) or (ot < -100.0)):
-#while hum == 0:
 	if zz < 9:
 		time.sleep(1.5)
 		zz=zz+1
@@ -69,7 +69,7 @@ wd = weatherStation.current_wind_direction()
 time.sleep(5.0) # must be five or above 
 ws = weatherStation.current_wind_speed()/1.609 # test wind speed again
 wg = weatherStation.get_wind_gust()/1.609 # test wind gust again
-totalRain = weatherStation.get_current_rain_total()/25.4
+totalRain = totalRain + weatherStation.get_current_rain_total()/25.4
 print "Time = %s" % tm
 print "Indoor Temp = %0.1f *C" % it
 print "Outdoor Temp = %0.1f *C" % ot
@@ -96,3 +96,5 @@ file.close()
 
 # Copy the Weather data file to the apache HTML directory
 shutil.copy2('./wthrdata.dat', '/var/www/html/wthrdata.dat')
+
+#time.sleep(15.0)
