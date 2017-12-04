@@ -26,4 +26,4 @@ crontab -e
 
 If you want to log errors:
 
-@reboot sh /home/pi/bbt/weatherlauncher.sh >/home/pi/logs/cronlog 2>&1
+@reboot sh /home/pi/TestWeather/weatherlauncher.sh >/home/pi/logs/cronlog 2>&1
