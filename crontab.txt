@@ -1,29 +1,24 @@
 
-crontab -e (edit cron)
-this runs the program once a minute
+#
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
 
-
-# 
+#
 # For more information see the manual pages of crontab(5) and cron(8)
 
-# 
+#
 # m h  dom mon dow   command
 
 
-# Run the script every minute
-* * * * * sudo python /home/pi/TestWeather/getwthr.py
+# below runs getwthr.py every 60 seconds
+#* * * * * sudo python /home/pi/TestWeather/getwthr.py
 
-# Reboot every day at midnight
-0 0 * * * reboot
-
-
-
-To run a program at boot up:
-crontab -e
-
-@reboot sh /home/pi/TestWeather/weatherlauncher.sh
+# below starts getwthr.py at boot time
+@reboot sudo python /home/pi/TestWeather/getwthr.py &
 
 
-If you want to log errors:
+# below reboots the pi every dat at midnight
+0 0 * * * sudo reboot
 
-@reboot sh /home/pi/TestWeather/weatherlauncher.sh >/home/pi/logs/cronlog 2>&1
+
