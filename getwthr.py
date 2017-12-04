@@ -33,16 +33,16 @@ totalRain = 0
 from tentacle_pi.AM2315 import AM2315 # driver for Outdoor temperature and humidity guage
 am = AM2315(0x5c,"/dev/i2c-1")
 sensor = BMP280.BMP280()
-temperature, humidity, crc_check = am.sense()
+
 ds3231 = SDL_DS3231.SDL_DS3231(1, 0x68)
 weatherStation = SDL_Pi_WeatherRack.SDL_Pi_WeatherRack(anenometerPin, rainPin, 0,0,SDL_MODE_I2C_ADS1015)
 
 weatherStation.setWindMode(SDL_MODE_SAMPLE, 5.0)
 
 while True:
+
+    temperature, humidity, crc_check = am.sense()
     currentWindSpeed = weatherStation.current_wind_speed()/1.609
-
-
     tm = ds3231.read_datetime()   
     it = sensor.read_temperature()
     ot = temperature

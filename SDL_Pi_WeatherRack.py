@@ -14,9 +14,16 @@
 
 # imports
 
+try:
+	# Check for user imports
+	try:
+        	import conflocal as config
+	except ImportError:
+        	import config
 
-import conflocal as config
 
+except:
+	import NoWPAConfig.py as config	
 
 import sys
 import time as time_
