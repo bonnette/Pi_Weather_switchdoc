@@ -66,9 +66,9 @@ while True:
     ws = weatherStation.current_wind_speed()/1.609 # test wind speed
     wg = weatherStation.get_wind_gust()/1.609
     wd = weatherStation.current_wind_direction()
-    time.sleep(5.0) # must be five or above 
+    #time.sleep(5.0) # must be five or above 
     ws = weatherStation.current_wind_speed()/1.609 # test wind speed again
-    wg = weatherStation.get_wind_gust()/1.609 # test wind gust again
+    #wg = weatherStation.get_wind_gust()/1.609 # test wind gust again
     totalRain = totalRain + weatherStation.get_current_rain_total()/25.4
     print "Time = %s" % tm
     print "Indoor Temp = %0.1f *C" % it
