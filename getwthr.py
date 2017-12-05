@@ -39,10 +39,13 @@ weatherStation = SDL_Pi_WeatherRack.SDL_Pi_WeatherRack(anenometerPin, rainPin, 0
 
 weatherStation.setWindMode(SDL_MODE_SAMPLE, 5.0)
 
+# An infinite loop that reads data the waits 15 seconds then reads it again etc
+# The loop was added so that rain guage interrupts could be counted.
+# getwthr.py is run at boot time from CRONTAB (@reboot.....)
 while True:
 
     temperature, humidity, crc_check = am.sense()
-    currentWindSpeed = weatherStation.current_wind_speed()/1.609
+    #currentWindSpeed = weatherStation.current_wind_speed()/1.609
     tm = ds3231.read_datetime()   
     it = sensor.read_temperature()
     ot = temperature
@@ -67,7 +70,7 @@ while True:
     wg = weatherStation.get_wind_gust()/1.609
     wd = weatherStation.current_wind_direction()
     #time.sleep(5.0) # must be five or above 
-    ws = weatherStation.current_wind_speed()/1.609 # test wind speed again
+    #ws = weatherStation.current_wind_speed()/1.609 # test wind speed again
     #wg = weatherStation.get_wind_gust()/1.609 # test wind gust again
     totalRain = totalRain + weatherStation.get_current_rain_total()/25.4
     print "Time = %s" % tm
