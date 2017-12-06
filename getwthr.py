@@ -45,7 +45,6 @@ weatherStation.setWindMode(SDL_MODE_SAMPLE, 5.0)
 while True:
 
     temperature, humidity, crc_check = am.sense()
-    #currentWindSpeed = weatherStation.current_wind_speed()/1.609
     tm = ds3231.read_datetime()   
     it = sensor.read_temperature()
     ot = temperature
@@ -69,10 +68,8 @@ while True:
     ws = weatherStation.current_wind_speed()/1.609 # test wind speed
     wg = weatherStation.get_wind_gust()/1.609
     wd = weatherStation.current_wind_direction()
-    #time.sleep(5.0) # must be five or above 
-    #ws = weatherStation.current_wind_speed()/1.609 # test wind speed again
-    #wg = weatherStation.get_wind_gust()/1.609 # test wind gust again
-    totalRain = totalRain + weatherStation.get_current_rain_total()/25.4
+    totalRain = totalRain + weatherStation.get_current_rain_total()
+    inch_rain = totalRain / 25.4
     print "Time = %s" % tm
     print "Indoor Temp = %0.1f *C" % it
     print "Outdoor Temp = %0.1f *C" % ot
@@ -81,7 +78,7 @@ while True:
     print "Wind Speed= %0.2f MPH" % ws
     print "Wind Gust= %0.2f MPH" % wg
     print "Wind Direction= %0.2f Degrees" % wd
-    print "Total Rain= %0.2f in" % totalRain
+    print "Total Rain= %0.2f in" % inch_rain
     print "crc: %i" % crc_check
     print " "
 
@@ -89,7 +86,7 @@ while True:
 
     # Open the weather data file and populate with data 
     file = open("wthrdata.dat","w")
-    file.write('{"FullDataString": "%04.1f,%0.1f,%04.1f,%s,50.63,%04.1f,%04.1f,%05.1f,%0.2f,3.33,6.98,6.30,11.21,90.00,135.00,0,%s,,0,-1,4.04,-54.00,4.92,93.20,5.15,24.00,0.00,0.00,0.00,0.00,0.00,0.00,V:1,NONE ,", "id": "1", "name": "HomeWeather", "connected": true}' % (ot,hum,it,sensor.read_pressure(),ws,wg,wd,totalRain,tm))
+    file.write('{"FullDataString": "%04.1f,%0.1f,%04.1f,%s,50.63,%04.1f,%04.1f,%05.1f,%0.2f,3.33,6.98,6.30,11.21,90.00,135.00,0,%s,,0,-1,4.04,-54.00,4.92,93.20,5.15,24.00,0.00,0.00,0.00,0.00,0.00,0.00,V:1,NONE ,", "id": "1", "name": "HomeWeather", "connected": true}' % (ot,hum,it,sensor.read_pressure(),ws,wg,wd,inch_rain,tm))
     file.close() # close the weather data file
 
     # Print the weather data file contents on the terminal screen
